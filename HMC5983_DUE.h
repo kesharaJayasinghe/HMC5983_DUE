@@ -32,3 +32,30 @@ typedef enum{
     HMC5983_MAGGAIN_5_6                        = 0xC0,  // +/- 5.6
     HMC5983_MAGGAIN_8_1                        = 0xE0   // +/- 8.1
 } hmc5983MagGain;
+
+typedef struct hmc5983MagData_s
+{
+	double x;
+	double y;
+	double z;
+	double orientation;  	
+}hmc5983MagData;
+
+class HMC5983_due : public Adafruit_Sensor
+{
+  public:
+
+  	bool begin(void);
+    void setMagGain(hmc5983MagGain gain);
+    bool getEvent(sensors_event_t*);
+
+  private:
+    hmc5983MagGain   _magGain;
+    hmc5983MagData   _magData;     // Last read magnetometer data will be available here
+    
+    void write8(byte address, byte reg, byte value);
+    byte read8(byte address, byte reg);
+    void read(void);
+};
+
+#endif
